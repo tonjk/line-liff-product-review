@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error("Error fetching LIFF_ID:", error);
         });
-});
     
     const form = document.getElementById('productReviewForm');
     const submitButton = document.getElementById('submitButton');
