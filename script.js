@@ -1,16 +1,18 @@
 // import { config } from './config.js'; 
 // console.log("LIFF_ID:", config.LIFF_ID);
 
-fetch('/.netlify/functions/getApiKey')
-    .then(response => response.json())
-    .then(data => {
-        let LIFF_ID = data.LIFF_ID;  // Assign API Key to variable
-        console.log("LIFF_ID:", LIFF_ID);
-        // You can use LIFF_ID here for further operations
-    })
-    .catch(error => console.error("Error fetching LIFF_ID:", error));
+
 
 document.addEventListener('DOMContentLoaded', function() {
+    fetch('/.netlify/functions/getApiKey')
+        .then(response => response.json())
+        .then(data => {
+            let LIFF_ID = data.LIFF_ID;  // Assign API Key to variable
+            console.log("LIFF_ID:", LIFF_ID);
+            // You can use LIFF_ID here for further operations
+        })
+        .catch(error => console.error("Error fetching LIFF_ID:", error));
+    
     // Initialize LIFF using the config object created in index.php
     liff.init({
         liffId: LIFF_ID // use key from secrest 
