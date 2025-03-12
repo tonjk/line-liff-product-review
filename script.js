@@ -1,26 +1,22 @@
-// import { config } from './config.js'; 
-// console.log("LIFF_ID:", config.LIFF_ID);
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/.netlify/functions/getApiKey')
         .then(response => response.json())
         .then(data => {
             let LIFF_ID = data.LIFF_ID;  // Assign API Key to variable
-            console.log("LIFF_ID:", LIFF_ID);
-            // You can use LIFF_ID here for further operations
+            
+            // Initialize LIFF after LIFF_ID is fetched
+            liff.init({
+                liffId: LIFF_ID // use key from the secret
+            }).then(() => {
+                console.log("LIFF initialized!");
+            }).catch((error) => {
+                console.error("LIFF initialization failed", error);
+            });
         })
-        .catch(error => console.error("Error fetching LIFF_ID:", error));
-    
-    // Initialize LIFF using the config object created in index.php
-    liff.init({
-        liffId: LIFF_ID // use key from secrest 
-    }).then(() => {
-        console.log("LIFF initialized!");
-    }).catch((error) => {
-        console.error("LIFF initialization failed", error);
-    });
+        .catch(error => {
+            console.error("Error fetching LIFF_ID:", error);
+        });
+});
     
     const form = document.getElementById('productReviewForm');
     const submitButton = document.getElementById('submitButton');
