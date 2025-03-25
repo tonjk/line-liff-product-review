@@ -17,6 +17,7 @@ app = Flask(__name__)
 # LINE Channel Access Token and Channel Secret
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv("CHANNEL_ACCESS_TOKEN")
 LINE_CHANNEL_SECRET = os.getenv("CHANNEL_SECRET")
+print(LINE_CHANNEL_ACCESS_TOKEN, flush=True)
 # Initialize LINE API and Webhook handler
 configuration = Configuration(access_token=LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
@@ -246,10 +247,10 @@ def handle_message(event):
         line_bot_api.reply_message_with_http_info(ReplyMessageRequest(reply_token=event.reply_token, messages=[text_message]))
 
       
-@app.route('/', methods=['GET'])
+@app.route('/health', methods=['GET'])
 def index():
     return jsonify({'response': 'OK najaeiei'})
 
 if __name__ == "__main__":
     # Run the Flask app
-    app.run(port=int(os.getenv("PORT", 5000)), debug=True)
+    app.run(port=int(os.getenv("PORT", 5000)))
