@@ -237,7 +237,7 @@ def callback():
 def handle_message(event):
     user_id = event.source.user_id
     user_input = event.message.text
-    response = chat(session_id=user_id, user_input=user_input)
+    response = chat(session_id=user_id,user_input=user_input)
     print(response, user_id, flush=True)
     
     text_message = TextMessage(text=response)
@@ -252,4 +252,4 @@ def index():
 
 if __name__ == "__main__":
     # Run the Flask app
-    app.run(port=8080, debug=True)
+    app.run(port=int(os.getenv("PORT", 5000)), debug=True)
