@@ -33,6 +33,19 @@ class ChatHistoryManager:
                 recent_messages.append(msg_data)
         recent_messages = [{"role": msg["role"], "content": msg["message"]} for msg in recent_messages]
         return recent_messages
+    
+    def cnt_chat_history(self, user_id, time_window=60*60):
+        """Retrieve messages from the last 'time_window' seconds."""
+        history_key = f"chat_history:{user_id}"
+        messages = self.redis_client.lrange(history_key, 0, -1)
+        recent_messages = []
+        
+        current_time = time.time()
+        for msg in messages:
+            msg_data = json.loads(msg)
+            if current_time - msg_data["timestamp"] <= time_window:
+                recent_messages.append(msg_data)
+        return len(recent_messages)
 
     def clear_chat_history(self, user_id):
         """Delete the chat history of a specific user."""

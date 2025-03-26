@@ -5,7 +5,7 @@ from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 load_dotenv()
 
-from src.RedisHistory.redis_chat_manager import ChatHistoryManager
+from .RedisHistory.redis_chat_manager import ChatHistoryManager
 
 llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=1, max_tokens=1024)
 
@@ -20,13 +20,29 @@ chat_history_manager = ChatHistoryManager()
 
 def chat(session_id:str, user_input:str):
     user_input = user_input.strip()
-    chat_history_manager.save_message(user_id=session_id, role='user', message=user_input)
-    response = chain.invoke({"input": user_input,
-                             "history": chat_history_manager.get_recent_chat_history(session_id)},
-                            config={"configurable": {"session_id": session_id}})
-    chat_history_manager.save_message(user_id=session_id, role='assistant', message=response)
+    cnt_chat = chat_history_manager.cnt_chat_history(session_id)
+    if user_input.lower() == '#reset' or cnt_chat > 40:
+        # cnt_chat = chat_history_manager.cnt_chat_history(session_id)
+        # print(cnt_chat)
+        chat_history_manager.clear_chat_history(session_id)
+        if cnt_chat > 20:
+            response = "เมื่อสักครู่เราคุยกันเยอะเหมือนกันนะครับเนี่ย แต่เราจะเริ่มแชทกันใหม่นะครับ"
+        else:
+            response = "Let's start a new chat kub. ^_^"
+        return response
+    else:
+        chat_history_manager.save_message(user_id=session_id, role='user', message=user_input)
+        response = chain.invoke({"input": user_input,
+                                "history": chat_history_manager.get_recent_chat_history(session_id)},
+                                config={"configurable": {"session_id": session_id}})
+        chat_history_manager.save_message(user_id=session_id, role='assistant', message=response)
 
-    return response
+        return response
 
 if __name__=="__main__":
-    print(chat(session_id='123', user_input='hello'))
+    # print(chat(session_id='123', user_input='hello'))
+    while True:
+        user_input = input("User: ")
+        if user_input == 'exit':
+            break
+        print(chat(session_id='123', user_input=user_input))

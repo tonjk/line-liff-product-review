@@ -1,6 +1,6 @@
 import os
 # from openai import OpenAI
-import requests, json
+# import requests, json
 from flask import Flask, request, abort, jsonify
 from linebot.v3 import WebhookHandler
 from linebot.v3.exceptions import InvalidSignatureError
@@ -17,7 +17,7 @@ app = Flask(__name__)
 # LINE Channel Access Token and Channel Secret
 LINE_CHANNEL_ACCESS_TOKEN = os.environ.get("CHANNEL_ACCESS_TOKEN")
 LINE_CHANNEL_SECRET = os.environ.get("CHANNEL_SECRET")
-print(LINE_CHANNEL_ACCESS_TOKEN, flush=True)
+
 # Initialize LINE API and Webhook handler
 configuration = Configuration(access_token=LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
@@ -44,7 +44,7 @@ def handle_message(event):
     user_id = event.source.user_id
     user_input = event.message.text
     response = chat(session_id=user_id,user_input=user_input)
-    print(response, user_id, flush=True)
+    # print(response, user_id, flush=True)
     
     text_message = TextMessage(text=response)
     with ApiClient(configuration) as api_client:
