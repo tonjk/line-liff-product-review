@@ -41,9 +41,9 @@ def chat(session_id:str, user_name:str, user_input:str):
                                 "history": chat_history_manager.get_recent_chat_history(session_id)},
                                 config={"callbacks": [langfuse_handler],
                                         "metadata": {
-                                            "session_id": session_id,
+                                            # "session_id": session_id,
                                             "langfuse_session_id": session_id,
-                                            "langfuse_user_id": user_name
+                                            # "langfuse_user_id": user_name
                                             }
                                         }
                                     )

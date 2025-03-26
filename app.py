@@ -20,19 +20,19 @@ LINE_CHANNEL_SECRET = os.environ.get("CHANNEL_SECRET")
 # Initialize LINE API and Webhook handler
 configuration = Configuration(access_token=LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
-def get_display_name(user_id, channel_token=LINE_CHANNEL_ACCESS_TOKEN):
-    url = f'https://api.line.me/v2/bot/profile/{user_id}'
-    headers = {'Authorization': f'Bearer {channel_token}'}
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Check if the request was successful
-        data = response.json()
-        display_name = data.get('displayName', '')
-    except requests.exceptions.RequestException as error:
-        print(error)
-        display_name = ''
-    
-    return display_name
+# def get_display_name(user_id, channel_token=LINE_CHANNEL_ACCESS_TOKEN):
+#     url = f'https://api.line.me/v2/bot/profile/{user_id}'
+#     headers = {'Authorization': f'Bearer {channel_token}'}
+#     try:
+#         response = requests.get(url, headers=headers)
+#         response.raise_for_status()  # Check if the request was successful
+#         data = response.json()
+#         display_name = data.get('displayName', '')
+#     except requests.exceptions.RequestException as error:
+#         print(error)
+#         display_name = ''
+#     return display_name
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -54,9 +54,8 @@ def callback():
 def handle_message(event):
     user_id = event.source.user_id
     user_input = event.message.text
-    user_name = get_display_name(user_id)
-    response = chat(session_id=user_id, user_name=user_name, user_input=user_input)
-    # print(response, user_id, flush=True)
+    # user_name = get_display_name(user_id)
+    response = chat(session_id=user_id, user_input=user_input)
     
     text_message = TextMessage(text=response)
     with ApiClient(configuration) as api_client:
