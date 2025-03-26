@@ -7,8 +7,9 @@ load_dotenv()
 from langfuse.callback import CallbackHandler
 from .RedisHistory.redis_chat_manager import ChatHistoryManager
 
-
 langfuse_handler = CallbackHandler()
+print("LangFuse Handler: ", langfuse_handler.auth_check(), flush=True)
+
 # langfuse_handler = CallbackHandler(public_key=os.environ.get('LANGFUSE_PUBLIC_KEY'),
 #                                    secret_key=os.environ.get('LANGFUSE_SECRET_KEY'),
 #                                    host=os.environ.get('LANGFUSE_HOST'))
