@@ -23,7 +23,7 @@ chain = prompt | llm | StrOutputParser()
 # init chat manager
 chat_history_manager = ChatHistoryManager()
 
-def chat(session_id:str, user_name:str, user_input:str):
+def chat(session_id:str, user_input:str):
     user_input = user_input.strip()
     cnt_chat = chat_history_manager.cnt_chat_history(session_id)
     if user_input.lower() == '#reset' or cnt_chat > 40:
