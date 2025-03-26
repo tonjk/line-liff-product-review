@@ -58,4 +58,4 @@ def index():
 
 if __name__ == "__main__":
     # Run the Flask app
-    app.run(port=int(os.environ.get("PORT", 5000)))
+    app.run(port=int(os.environ.get("PORT", 10000)))
