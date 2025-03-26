@@ -6,7 +6,9 @@ from dotenv import load_dotenv
 load_dotenv()
 from langfuse.callback import CallbackHandler
 from .RedisHistory.redis_chat_manager import ChatHistoryManager
-
+print(os.environ.get('LANGFUSE_PUBLIC_KEY')[:5], flush=True)
+print(os.environ.get('LANGFUSE_SECRET_KEY')[:5], flush=True)
+print(os.environ.get('LANGFUSE_HOST')[:5], flush=True)
 langfuse_handler = CallbackHandler(public_key=os.getenv('LANGFUSE_PUBLIC_KEY'), secret_key=os.getenv('LANGFUSE_SECRET_KEY'), host=os.getenv('LANGFUSE_HOST'))
 
 llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=1, max_tokens=1024)
