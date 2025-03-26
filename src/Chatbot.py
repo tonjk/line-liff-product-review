@@ -6,13 +6,13 @@ from dotenv import load_dotenv
 load_dotenv()
 from langfuse.callback import CallbackHandler
 from .RedisHistory.redis_chat_manager import ChatHistoryManager
-print(os.environ.get('LANGFUSE_PUBLIC_KEY')[:5], flush=True)
-print(os.getenv('LANGFUSE_PUBLIC_KEY')[:5], flush=True)
-print(os.environ.get('LANGFUSE_SECRET_KEY')[:5], flush=True)
-print(os.getenv('LANGFUSE_SECRET_KEY')[:5], flush=True)
-print(os.environ.get('LANGFUSE_HOST')[:5], flush=True)
-print(os.getenv('LANGFUSE_HOST')[:5], flush=True)
-langfuse_handler = CallbackHandler(public_key=os.environ.get('LANGFUSE_PUBLIC_KEY'), secret_key=os.environ.get('LANGFUSE_SECRET_KEY'), host=os.environ.get('LANGFUSE_HOST'))
+
+langfuse_handler = CallbackHandler(public_key="pk-lf-7825de89-a8c6-4c24-9cbc-8954a1a438e7",
+                                   secret_key="sk-lf-a9a2178b-9323-4ca1-947a-124968872130",
+                                   host="https://us.cloud.langfuse.com")
+# langfuse_handler = CallbackHandler(public_key=os.environ.get('LANGFUSE_PUBLIC_KEY'),
+#                                    secret_key=os.environ.get('LANGFUSE_SECRET_KEY'),
+#                                    host=os.environ.get('LANGFUSE_HOST'))
 
 llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=1, max_tokens=1024)
 
