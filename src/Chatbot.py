@@ -39,11 +39,9 @@ def chat(session_id:str, user_input:str):
         return response
     else:
         chat_history_manager.save_message(user_id=session_id, role='user', message=user_input)
-        response = chain.invoke({"input": user_input,
-                                "history": chat_history_manager.get_recent_chat_history(session_id)},
+        response = chain.invoke({"input": user_input, "history": chat_history_manager.get_recent_chat_history(session_id)},
                                 config={"callbacks": [langfuse_handler],
-                                        "metadata": {
-                                            # "session_id": session_id,
+                                        "configurable": {
                                             "langfuse_session_id": session_id,
                                             # "langfuse_user_id": user_name
                                             }
