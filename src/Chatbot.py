@@ -8,9 +8,10 @@ from langfuse.callback import CallbackHandler
 from .RedisHistory.redis_chat_manager import ChatHistoryManager
 
 
-langfuse_handler = CallbackHandler(public_key=os.environ.get('LANGFUSE_PUBLIC_KEY'),
-                                   secret_key=os.environ.get('LANGFUSE_SECRET_KEY'),
-                                   host=os.environ.get('LANGFUSE_HOST'))
+langfuse_handler = CallbackHandler()
+# langfuse_handler = CallbackHandler(public_key=os.environ.get('LANGFUSE_PUBLIC_KEY'),
+#                                    secret_key=os.environ.get('LANGFUSE_SECRET_KEY'),
+#                                    host=os.environ.get('LANGFUSE_HOST'))
 
 llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=1, max_tokens=1024)
 
