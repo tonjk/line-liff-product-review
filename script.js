@@ -1,22 +1,40 @@
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/.netlify/functions/getApiKey')
-        .then(response => response.json())
-        .then(data => {
-            let LIFF_ID = data.LIFF_ID;  // Assign API Key to variable
-            
-            // Initialize LIFF after LIFF_ID is fetched
-            liff.init({
-                liffId: LIFF_ID // use key from the secret
-            }).then(() => {
-                console.log("LIFF initialized!");
-            }).catch((error) => {
-                console.error("LIFF initialization failed", error);
-            });
-        })
-        .catch(error => {
-            console.error("Error fetching LIFF_ID:", error);
-        });
-    
+let liffInitialized = false;
+
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch('/.netlify/functions/getApiKey');
+        if (!response.ok) throw new Error(`Netlify fetch failed: ${response.status}`);
+        const data = await response.json();
+        const LIFF_ID = data.LIFF_ID; // Assign API Key to variable
+
+        // Initialize LIFF after LIFF_ID is fetched
+        try {
+            await liff.init({ liffId: LIFF_ID });
+            console.log('LIFF initialized!');
+            liffInitialized = true;
+        } catch (error) {
+            console.error('LIFF initialization failed', error);
+        }
+    } catch (error) {
+        // If Netlify or fetching the key fails, continue without blocking the page.
+        // Submit flow will detect that LIFF was not initialized and act accordingly.
+        console.warn('Skipping LIFF init due to Netlify error or missing key', error);
+    }
+    // Attempt to read profile only if LIFF initialized. Use fallbacks otherwise.
+    var lineName = '';
+    var myname = '';
+
+
+    try {
+        const profile = await liff.getProfile();
+        // const lineUserId = profile.userId;
+        
+        lineName = profile.displayName || 'Not Found';
+        console.log('lineName:', lineName);
+    } catch (err) {
+        console.warn('Failed to get LIFF profile', err);
+        lineName = 'Guest User';
+    }
     const form = document.getElementById('productReviewForm');
     const submitButton = document.getElementById('submitButton');
     // Form submit handler
@@ -42,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             type: "text",
             text: `Review Submitted:\n----------\n- Product Group: ${formData.productGroup}\n- Product Name: ${formData.productName}\n- Rating: ${formData.rating}/5\n- Review: ${formData.review}\n----------`
             };
-            if (liff.isInClient()) {
+            if (liffInitialized && liff.isInClient()) {
                 liff.sendMessages([message])
                     .then(() => {
                         console.log("Message sent");

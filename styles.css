@@ -45,6 +45,16 @@ textarea {
     resize: vertical;
 }
 
+small {
+    font-size: 12px;
+    color: #666;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    text-align: right;
+}
+
 button {
     background-color: #06C755;
     color: white;
