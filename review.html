@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Review Form</title>
+    <!-- <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script> -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -57,19 +59,10 @@
             </div>
             
             <button type="submit" id="submitButton">Submit Review</button>
-            <small>Username form LINE: <span id="lineName"></span></small>
+            <small>Username from LINE: <span id="lineName">Loading...</span></small>
         </form>
     </div>
 
-        <!-- Include LIFF SDK -->
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-
-    <!-- Define the config variable -->
-    <!-- <script>
-        const config = {
-            LIFF_ID: "your_liff_id_here"
-        };
-    </script> -->
     <script src="./script.js" type="module"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 let liffInitialized = false;
 
 document.addEventListener('DOMContentLoaded', async function() {
+    const displayNameEl = document.getElementById("lineName");
     try {
         const response = await fetch('/.netlify/functions/getApiKey');
         if (!response.ok) throw new Error(`Netlify fetch failed: ${response.status}`);
@@ -21,19 +22,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.warn('Skipping LIFF init due to Netlify error or missing key', error);
     }
     // Attempt to read profile only if LIFF initialized. Use fallbacks otherwise.
-    var lineName = '';
-    var myname = '';
-
-
     try {
         const profile = await liff.getProfile();
         // const lineUserId = profile.userId;
-        
-        lineName = profile.displayName || 'Not Found';
-        console.log('lineName:', lineName);
+        if (displayNameEl) {
+            displayNameEl.textContent = profile.displayName;
+        }
+        // lineName = profile.displayName || 'Not Found';
+        // console.log('lineName:', lineName);
     } catch (err) {
         console.warn('Failed to get LIFF profile', err);
-        lineName = 'Guest User';
+        displayNameEl.textContent = 'Guest User';
+        // console.log('lineName (fallback):', lineName, lineUserId);
     }
     const form = document.getElementById('productReviewForm');
     const submitButton = document.getElementById('submitButton');
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             type: "text",
             text: `Review Submitted:\n----------\n- Product Group: ${formData.productGroup}\n- Product Name: ${formData.productName}\n- Rating: ${formData.rating}/5\n- Review: ${formData.review}\n----------`
             };
-            if (liffInitialized && liff.isInClient()) {
+            if (liff.isInClient()) {
                 liff.sendMessages([message])
                     .then(() => {
                         console.log("Message sent");
